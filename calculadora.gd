@@ -21,9 +21,9 @@ func is_pressed(button_name: String) -> void:
 			
 		
 		"=":
-			var value_1: int = int(number_1)
-			var value_2: int = int(number_2)
-			var result: int = 0
+			var value_1: float = float(number_1)
+			var value_2: float = float(number_2)
+			var result: float = 0
 			
 			match operator:
 				"+":
@@ -33,14 +33,21 @@ func is_pressed(button_name: String) -> void:
 					result = value_1 - value_2
 					
 				"/":
-					@warning_ignore("integer_division")
-					result = value_1 / value_2
+					if value_2 == 0 or value_1 == 0:
+						display_text.text = "Erro: Divisão por zero"
+						return
+					else:
+						result = value_1 / value_2
 					
 				"*":
 					result = value_1 * value_2
 					
-			display_text.text = str(result)
-			reset()
+			if floor(result) == result:
+				display_text.text = str(int(result))
+				reset()
+			else:
+				display_text.text = str(result).pad_decimals(2)
+				reset()
 		
 		"Add":
 			change_operator("+")
